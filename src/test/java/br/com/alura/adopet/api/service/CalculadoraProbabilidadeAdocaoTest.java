@@ -14,8 +14,8 @@ import br.com.alura.adopet.api.model.TipoPet;
 public class CalculadoraProbabilidadeAdocaoTest {
 
     @Test
-    @DisplayName("4 anos e 4 kg - ALTA")
-    void cenario01() {
+    void deveriaRetornarProbabilidadeAltaComPesoBaixoEIdadeBaixa() {
+        //ARRANGE
         Abrigo abrigo = new Abrigo(new CadastroAbrigoDto(
                 "Abrigo Feliz",
                 "94999999999",
@@ -28,16 +28,18 @@ public class CalculadoraProbabilidadeAdocaoTest {
                 4,
                 "cinza",
                 4.0f), abrigo);
-
         CalculadoraProbabilidadeAdocao calculadora = new CalculadoraProbabilidadeAdocao();
+
+        //ACT
         ProbabilidadeAdocao probabilidade = calculadora.calcular(pet);
 
+        //ASSERT
         Assertions.assertEquals(ProbabilidadeAdocao.ALTA, probabilidade);
     }
 
     @Test
-    @DisplayName("15 anos e 4 kg - MEDIA")
-    void cenario02() {
+    void deveriaRetornarProbabilidadeMediaComPesoBaixoIdadeAlta() {
+        //ARRANGE
         Abrigo abrigo = new Abrigo(new CadastroAbrigoDto(
                 "Abrigo Feliz",
                 "94999999999",
@@ -50,10 +52,12 @@ public class CalculadoraProbabilidadeAdocaoTest {
                 15,
                 "cinza",
                 4.0f), abrigo);
-
         CalculadoraProbabilidadeAdocao calculadora = new CalculadoraProbabilidadeAdocao();
+
+        //ACT
         ProbabilidadeAdocao probabilidade = calculadora.calcular(pet);
 
+        //ASSERT
         Assertions.assertEquals(ProbabilidadeAdocao.MEDIA, probabilidade);
     }
 }
