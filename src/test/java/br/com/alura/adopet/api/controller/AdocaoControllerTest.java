@@ -36,6 +36,29 @@ class AdocaoControllerTest {
         ).andReturn().getResponse();
 
         //ASSERT
-        Assertions.assertEquals(400, response);
+        Assertions.assertEquals(400, response.getStatus());
+    }
+
+    @Test
+    void deveriaDevolverCodigo200ParaSolicitacaoDeAdocaoSemErros() throws Exception{
+        //ARRAGE
+        String json = """
+                {
+                    "idPet": 1,
+                    "idTutor": 1,
+                    "motivo": "qualquer",
+                }
+                """;;
+
+        //ACT
+        var response = mockMvc.perform(
+                MockMvcRequestBuilders
+                .post("/adocoes")
+                .content(json)
+                .contentType(MediaType.APPLICATION_JSON)
+        ).andReturn().getResponse();
+
+        //ASSERT
+        Assertions.assertEquals(200, response.getStatus());
     }
 }
