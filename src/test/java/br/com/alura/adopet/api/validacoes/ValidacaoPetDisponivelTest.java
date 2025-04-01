@@ -15,7 +15,7 @@ import br.com.alura.adopet.api.model.Pet;
 import br.com.alura.adopet.api.repository.PetRepository;
 
 @ExtendWith(MockitoExtension.class)
-public class ValidacaoPetDis {
+public class ValidacaoPetDisponivelTest {
 
     @InjectMocks
     private ValidacaoPetDisponivel validacao;
