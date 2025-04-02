@@ -1,6 +1,7 @@
 package br.com.alura.adopet.api.controller;
 
-import br.com.alura.adopet.api.dto.SolicitacaoAdocaoDto;
+import br.com.alura.adopet.api.dto.CadastroTutorDto;
+import br.com.alura.adopet.api.service.TutorService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,53 +14,45 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
-import br.com.alura.adopet.api.service.AdocaoService;
+import static org.junit.jupiter.api.Assertions.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @AutoConfigureJsonTesters
-class AdocaoControllerTest {
+class TutorControllerTest {
 
     @Autowired
     private MockMvc mockMvc;
 
-    @MockBean
-    private AdocaoService adocaoService;
-
     @Autowired
-    private JacksonTester<SolicitacaoAdocaoDto> jacksonTester;
+    private JacksonTester<CadastroTutorDto> jacksonTester;
+
+    @MockBean
+    private TutorService tutorService;
 
     @Test
-    void deveriaDevolverCodigo400ParaSolicitacaoDeAdocaoComErros() throws Exception{
-        //ARRANGE
-        String json = "{}";
+    void deveriaDevolverCodigo200AoCadastrarTutor() throws Exception {
+        CadastroTutorDto dto = new CadastroTutorDto("Novo tutor", "11999999999", "email@email.com");
 
-        //ACT
         var response = mockMvc.perform(
                 MockMvcRequestBuilders
-                .post("/adocoes")
-                .content(json)
-                .contentType(MediaType.APPLICATION_JSON)
+                        .post("/tutores")
+                        .content(jacksonTester.write(dto).getJson())
+                        .contentType(MediaType.APPLICATION_JSON)
         ).andReturn().getResponse();
 
-        //ASSERT
-        Assertions.assertEquals(400, response.getStatus());
+        Assertions.assertEquals(200, response.getStatus());
     }
 
     @Test
-    void deveriaDevolverCodigo200ParaSolicitacaoDeAdocaoSemErros() throws Exception{
-        //ARRANGE
-        SolicitacaoAdocaoDto dto = new SolicitacaoAdocaoDto(1l, 1l, "Qualquer");
-
-        //ACT
+    void deveriaDevolverCodigo400AoCadastrarTutorComDadosIncorretos() throws Exception {
         var response = mockMvc.perform(
                 MockMvcRequestBuilders
-                .post("/adocoes")
-                .content(jacksonTester.write(dto).getJson())
-                .contentType(MediaType.APPLICATION_JSON)
+                        .post("/tutores")
+                        .content("")
+                        .contentType(MediaType.APPLICATION_JSON)
         ).andReturn().getResponse();
 
-        //ASSERT
-        Assertions.assertEquals(200, response.getStatus());
+        Assertions.assertEquals(400, response.getStatus());
     }
 }
